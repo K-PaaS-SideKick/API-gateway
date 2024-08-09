@@ -14,6 +14,21 @@ spring:
     gateway:
       routes:
         - id: project-service
-          uri: lb://project-service
+          uri: lb://PROJECT-SERVICE
           predicates:
             - Path=/project/**
+          filters:
+            - RewritePath=/project/(?<segment>.*), /$\{segment}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "gateway"
+          - "health"
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      enabled: true
